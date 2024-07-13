@@ -8,14 +8,19 @@ from app.dependencies import get_current_user
 router = APIRouter()
 
 @router.post("/register")
-async def register(username: str, email: str, password: str):
+async def register(first_name: str, last_name: str, email: str, password: str):
     db = SessionLocal()
-    user = db.query(User).filter(User.username == username).first()
+    user = db.query(User).filter(User.email == email).first()
     
     if user:
         raise HTTPException(status_code=400, detail="Username already exists")
 
-    new_user = User(username=username, email=email, password_hash=generate_password_hash(password))
+    new_user = User(
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        password_hash=generate_password_hash(password)
+    )
     db.add(new_user)
     db.commit()
     db.close()
@@ -23,17 +28,17 @@ async def register(username: str, email: str, password: str):
     return {"msg": "User created successfully"}
 
 @router.post("/login")
-async def login(username: str, password: str):
+async def login(email: str, password: str):
     db = SessionLocal()
-    user = db.query(User).filter(User.username == username).first()
+    user = db.query(User).filter(User.email == email).first()
     db.close()
 
     if not user or not check_password_hash(user.password_hash, password):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
-    access_token = create_access_token(data={"sub": user.username})
+    access_token = create_access_token(data={"sub": user.email})
     return {"access_token": access_token, "token_type": "bearer"}
 
 @router.get("/users/me")
 async def read_users_me(current_user: User = Depends(get_current_user)):
-    return {"username": current_user.username, "email": current_user.email}
+    return {"user_id": current_user.user_id, "email": current_user.email}
