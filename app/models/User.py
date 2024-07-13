@@ -16,7 +16,7 @@ class User(Base):
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
     email = Column(String(100), nullable=False)
-    password_hash = Column(String)
+    password_hash = Column(String(255), nullable=False)
     phone = Column(String(50))
     address = Column(Text)
     role = Column(Enum(UserRole), default=UserRole.user)

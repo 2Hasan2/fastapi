@@ -6,3 +6,6 @@ pydantic
 aiosqlite
 werkzeug
 python-jose
+mysqlclient
+PyMySQL
+aiomysql
