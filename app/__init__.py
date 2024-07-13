@@ -13,10 +13,10 @@ def create_app() -> FastAPI:
     app = FastAPI()
 
     # /auth/* routes
-    app.include_router(auth_router)
+    app.include_router(auth_router, prefix="/auth", tags=["users"])
 
     # /categories/* routes
-    app.include_router(categories_router)
+    app.include_router(categories_router, prefix="/categories", tags=["categories"])
 
     # Add custom middleware
     app.add_middleware(CustomMiddleware)
