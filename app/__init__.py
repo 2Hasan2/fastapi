@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from .database import create_db, SessionLocal
 from .routes.auth import router as auth_router
 from .routes.categories import router as categories_router
+from .routes.products import router as products_router
 from .middlewares import CustomMiddleware
 from .config import DATABASE_URL
 from databases import Database
@@ -17,6 +18,9 @@ def create_app() -> FastAPI:
 
     # /categories/* routes
     app.include_router(categories_router, prefix="/categories", tags=["categories"])
+
+    # /products/* routes
+    app.include_router(products_router, prefix="/products", tags=["products"])
 
     # Add custom middleware
     app.add_middleware(CustomMiddleware)

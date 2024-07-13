@@ -32,6 +32,23 @@ async def create_category(name: str, description: str):
     db.close()
     return {"msg": "Category created successfully"}
 
+# count of categories
+@router.get("/count")
+async def count_categories():
+    db = SessionLocal()
+    count = db.query(Category).count()
+    db.close()
+    return {"count": count}
+
+# count of products
+@router.get("/{category_id}/products/count")
+async def count_products(category_id: int):
+    db = SessionLocal()
+    count = db.query(Product).filter(Product.category_id == category_id).count()
+    db.close()
+    return {"count": count}
+
+
 @router.put("/{category_id}")
 async def update_category(category_id: int, name: str, description: str):
     db = SessionLocal()
@@ -105,3 +122,4 @@ async def delete_product(category_id: int, product_id: int):
     db.commit()
     db.close()
     return {"msg": "Product deleted successfully"}
+
