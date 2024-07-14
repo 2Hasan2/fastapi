@@ -1,8 +1,3 @@
-from app import create_app
-
-app = create_app()
-
-
 if __name__ == "__main__":
     import uvicorn
     #! in the production mode, we need to change the Log level to "info" and reload to False
